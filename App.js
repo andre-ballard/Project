@@ -17,7 +17,7 @@ export default class App extends React.Component {
   constructor(props)
   {
     super(props);
-    this.state = {ContentWidth: 0, ContentHeight: 0, index: -10, scrollable: true, isAnnotation: false};
+    this.state = {ContentWidth: 200, ContentHeight: 200, scrollable: true, isAnnotation: false};
     this.draw = this.draw.bind(this);
   }
 
@@ -30,13 +30,12 @@ export default class App extends React.Component {
   {
     return(  
         <RNSketchCanvas
-            containerStyle={{zIndex:this.state.index,position: 'absolute',height: this.state.ContentHeight, width: this.state.ContentWidth,backgroundColor: 'transparent'}}
-            canvasStyle={{marginTop:60,backgroundColor: 'red',zIndex: this.state.index, position: 'absolute', height: this.state.ContentHeight, width: this.state.ContentWidth,backgroundColor: 'transparent'}}
+            containerStyle={{marginTop:100,flex:1,backgroundColor: 'transparent'}}
+            canvasStyle={{marginTop:100,flex:1,backgroundColor: 'red',backgroundColor: 'transparent'}}
             defaultStrokeIndex={0}
             defaultStrokeWidth={5}
             undoComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Undo</Text></View>}
             clearComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Clear</Text></View>}
-            
             strokeWidthComponent={(w) => {
               return (<View style={styles.strokeWidthButton}>
                 <View  style={{
@@ -45,32 +44,15 @@ export default class App extends React.Component {
                 }} />
               </View>
             )}}
+            text={[{text: paragraph, position:{x:0,y:0}, fontSize:15}]}
           />
           );
   }
 
   render() {
-    var drawing;
-    if(this.state.isAnnotation == false)
-      {
-         drawing = "Draw";
-      }else{
-         drawing = "Stop";
-      }
-      
       return (
       <View style={styles.container}>
-      <View style={{marginTop:40,height:30}}>
-      <Button style={{backgroundColor:'blue',height: 10}} title={drawing} onPress={this.draw} />
-      </View>
-      <View style={styles.Scroll}>
-          <ScrollView scrollEnabled={this.state.scrollable}>
           {this.renderCanvas()}
-            <Text style={styles.welcome} onLayout={(event) => {
-            var {x, y, width, height} = event.nativeEvent.layout;
-            this.setState({ContentWidth: width, ContentHeight: height})}}>{paragraph + '\n' + paragraph2}</Text>
-          </ScrollView>
-        </View>
       </View>
     );
   }
@@ -79,26 +61,5 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  welcome: {
-    fontSize: 20,
-    padding: 20,
-    flex:1,
-    marginTop:30
-  },
-  Scroll: {
-      flex:1,
-      marginTop: 60
-  },
-  strokeColorButton: {
-    marginHorizontal: 2.5, marginVertical: 8, width: 30, height: 30, borderRadius: 15,
-  },
-  strokeWidthButton: {
-    marginHorizontal: 2.5, marginVertical: 8, width: 30, height: 30, borderRadius: 15,
-    justifyContent: 'center', alignItems: 'center', backgroundColor: '#39579A'
-  },
-  functionButton: {
-    marginHorizontal: 2.5, marginVertical: 8, height: 30, width: 60,
-    backgroundColor: '#39579A', justifyContent: 'center', alignItems: 'center', borderRadius: 5,
   }
 });
